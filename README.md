@@ -1,9 +1,9 @@
 # Fabric Template Mod
 
 ## Setup
-1. Install java 8
-2. Install Intellij IDEA
-4. Open "build.gradle" with Intellij IDEA to import the project
+1. Install jdk 8
+2. Install [Intellij IDEA]( https://www.jetbrains.com/idea/ )
+4. Open "build.gradle" with [Intellij IDEA]( https://www.jetbrains.com/idea/ ) to import the project
 
 #### Recommended setup on windows
 1. Install [scoop]( https://github.com/lukesampson/scoop#installation ) with powershell
@@ -21,7 +21,7 @@
     scoop bucket add jetbrains 
     scoop bucket add extra
     ```
-4. Install java & IDEA with scoop
+4. Install [jdk8]( https://openjdk.java.net/ ) & [Intellij IDEA]( https://www.jetbrains.com/idea/ ) with [scoop]( https://github.com/lukesampson/scoop#installation )
     ```powershell
    scoop install ojdkbuild8
    scoop install IntelliJ-IDEA
