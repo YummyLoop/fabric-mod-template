@@ -1,6 +1,10 @@
 # gradle
 
 .gradle/
+gradle/
+gradlew
+gradlew.bat
+.build/
 build/
 out/
 classes/
@@ -23,3 +27,4 @@ bin/
 # fabric
 
 run/
+libs/*.jar
