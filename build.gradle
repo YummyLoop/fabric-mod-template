@@ -1,29 +1,33 @@
 plugins {
+	id 'kotlin' version '1.3.50'
+	id 'kotlinx-serialization' version '1.3.50'
+	id 'org.jetbrains.dokka' version '0.9.18'
 	id 'fabric-loom' version '0.2.5-SNAPSHOT'
+	id 'idea'
 	id 'maven-publish'
 }
+apply from: 'repositories.gradle'
+apply from: 'dependencies.gradle'
 
+// Output location of 'gradle build'
+libsDirName = "${project.outDir}"
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
-
-archivesBaseName = project.archives_base_name
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+archivesBaseName = "${project.archives_base_name}-${project.minecraft_version}"
 version = project.mod_version
 group = project.maven_group
 
 minecraft {
 }
 
-dependencies {
-	//to change the versions see the gradle.properties file
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}"
-	modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
-
-	// Fabric API. This is technically optional, but you probably want it anyway.
-	modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
-	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-	// You may need to force-disable transitiveness on them.
+sourceSets {
+    main.kotlin.srcDirs += 'src/main'
+    main.java.srcDirs += 'src/main'
 }
 
 processResources {
@@ -56,6 +60,14 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 
 jar {
 	from "LICENSE"
+	manifest {
+        attributes([
+            "Title"     : "${project.archives_base_name}",
+            "Version"   : "${version}",
+            "Author"    : "${project.mod_author}",
+            "Timestamp" : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
 }
 
 // configure the maven publication
@@ -78,3 +90,69 @@ publishing {
 		// mavenLocal()
 	}
 }
+
+// Intellij IDEA config
+// see https://docs.gradle.org/current/dsl/org.gradle.plugins.ide.idea.model.IdeaModule.html
+idea {
+	module {
+		//extra dirs that should be excluded by IDEA
+		excludeDirs += file('gradle')
+		excludeDirs += file('run')
+		excludeDirs += file('out')
+
+		//SDK for the IDEA project
+		jdkName = '1.8'
+	}
+}
+// Gradle Wrapper location
+task wrapper(type: Wrapper, overwrite: true) {
+	jarFile = file('.gradle/wrapper/wrapper.jar')
+}
+
+/*
+ * Tasks
+*/
+File configFile = file('gradle.properties')
+
+task incrementVersion{
+	doFirst {
+		int lastdot = version.lastIndexOf('.')+1
+		int minor=version.substring(lastdot).toInteger()+1
+		String major=version.substring(0,lastdot)
+		// Replace the mod version by the new one (+1)
+		configFile.setText(configFile.getText()
+		 .replaceFirst("mod_version =.*", "mod_version = "+major+minor+"")
+		)
+	}
+}
+
+task updateFabric {
+	doFirst {
+		// Get fabric versions/webpage
+		def fabricWeb ="https://maven.fabricmc.net/net/fabricmc/"
+		def fabricData="maven-metadata.xml"
+		def (loader) = "${fabricWeb}fabric-loader/${fabricData}".toURL().text      	  =~ "<release>.*</release>"
+		def (api)    = "${fabricWeb}fabric-api/fabric-api/${fabricData}".toURL().text =~ "<release>.*</release>"
+		def (yarn)   = "${fabricWeb}yarn/${fabricData}".toURL().text				  =~ "<release>.*</release>"
+		def loom 	 = "${fabricWeb}fabric-loom/${fabricData}".toURL().text           =~ "<version>.*</version>"
+		// Filter results
+		loader = loader.replaceAll("<[/]*release>", "")
+		api    = api.replaceAll("<[/]*release>", "")
+		yarn   = yarn.replaceAll("<[/]*release>", "")
+		loom   = loom[( (int) loom.size())-1].replaceAll("<[/]*version>", "")
+		// Print results
+		println "yarn   = ${yarn}"
+		println "loader = ${loader}"
+		println "api    = ${api}"
+		println "loom   = ${loom}"
+
+		// Update versions to the latest
+		configFile.setText(configFile.getText()
+		   .replaceFirst("yarn_mappings=.*", "yarn_mappings=${yarn}")
+		   .replaceFirst("loader_version=.*", "loader_version=${loader}")
+		   .replaceFirst("fabric_version=.*", "fabric_version=${api}")
+		)
+	}
+}
+
+defaultTasks 'incrementVersion', 'build'
