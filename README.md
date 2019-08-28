@@ -32,6 +32,9 @@
   * The "mixins" object can be removed from mod.json if you do not need to use mixins.
   * Please replace all occurrences of "modid" or "templateid" with your own mod ID
 
+## Info
+ * The build jar output is set by default to a folder named "out" on the project root
+ * To run the build task ("gradle build") from IDEA use the function "Run Anything" (Press ctrl twice) and type/run "gradle build"
 
 ## License
 
