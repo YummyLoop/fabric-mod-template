@@ -30,7 +30,7 @@
 ## Note
   * Edit *.gradle and fabric.mod.json to suit your needs.
   * The "mixins" object can be removed from mod.json if you do not need to use mixins.
-  * Please replace all occurences of "modid" or "templateid" with your own mod ID
+  * Please replace all occurrences of "modid" or "templateid" with your own mod ID
 
 
 ## License
