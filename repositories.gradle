@@ -16,12 +16,12 @@ repositories {
         url 'http://maven.modmuss50.me'
     }
     maven {
-        name = 'Cotton (Snapshot)'
-        url = 'http://server.bbkr.space:8081/artifactory/libs-snapshot'
+        name = 'Jitpack'
+        url = 'https://jitpack.io'
     }
     maven {
-        name = 'Cotton'
-        url = 'http://server.bbkr.space:8081/artifactory/libs-release'
+        name = 'NerdHubMC'
+        url = 'https://maven.abusedmaster.xyz/'
     }
     mavenLocal()
     mavenCentral()

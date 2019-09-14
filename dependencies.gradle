@@ -4,7 +4,7 @@ dependencies {
     // Fabric
     mappings "net.fabricmc:yarn:${project.yarn_mappings}"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modApi "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     /** Kotlin 
      * ( https://plugins.gradle.org/plugin/org.jetbrains.kotlin.jvm )
