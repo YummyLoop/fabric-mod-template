@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger
 
 class TemplateMod : ModInitializer {
 
-    private val logger: Logger = LogManager.getFormatterLogger("LoggerTest")
+    private val logger: Logger = LogManager.getLogger("LoggerTest")
 
     override fun onInitialize() {
         logger.info("**************************")
