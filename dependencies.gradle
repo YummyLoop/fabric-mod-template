@@ -13,4 +13,9 @@ dependencies {
     // Others
     modImplementation("me.shedaniel:RoughlyEnoughItems:${project.mod_REI}")
     modImplementation("io.github.prospector:modmenu:${project.mod_ModMenu}")
+
+    modApi("me.sargunvohra.mcmods:autoconfig1u:${project.mod_AutoConfig}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+    include "me.sargunvohra.mcmods:autoconfig1u:${project.mod_AutoConfig}"
 }

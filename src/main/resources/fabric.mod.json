@@ -23,6 +23,9 @@
         "adapter": "kotlin",
         "value": "yummyloop.template.TemplateMod"
       }
+    ],
+    "modmenu": [
+      "yummyloop.template.config.ModMenuIntegration"
     ]
   },
   "mixins": [
